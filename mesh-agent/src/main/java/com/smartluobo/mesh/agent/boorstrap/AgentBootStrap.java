@@ -20,7 +20,7 @@ import java.util.List;
 @Component
 public class AgentBootStrap implements InitializingBean,ApplicationListener<ContextRefreshedEvent> {
 
-    String type = System.getProperty("agent.type");
+    String type = System.getProperty("type");
     private static final Logger LOGGER = LoggerFactory.getLogger(AgentBootStrap.class);
 
     @Resource
@@ -32,11 +32,14 @@ public class AgentBootStrap implements InitializingBean,ApplicationListener<Cont
     @Override
     public void afterPropertiesSet() throws Exception {
         EtcdRegistry etcdRegistry = new EtcdRegistry(Constant.ETCD_URL,serviceRepositry);
+        LOGGER.info("***************current service type:"+type+"***********");
         if("consumer".equals(type)){
             //如果是consumer类型的agent从etcd注册中心获取服务列表信息
+            LOGGER.info("agent从etcd注册中心获取服务列表信息");
             etcdRegistry.find(Constant.SERVICE_NAME);
         }else if("provider".equals(type)){
             //如果是provider类型的agent将服务信息注册到etcd注册中心
+            LOGGER.info("agent将服务信息注册到etcd注册中心");
             etcdRegistry.register(Constant.SERVICE_NAME, Integer.valueOf(Constant.AGENT_NETTY_PORT));
         }
     }

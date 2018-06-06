@@ -3,7 +3,7 @@ package com.smartluobo.mesh.agent.constant;
 public class Constant {
     public static final String SERVICE_NAME = "com.alibaba.dubbo.performance.demo.provider.IHelloService";
 
-    public static final String ETCD_URL = System.getProperty("etcd.url","http://192.168.1.100:2379");
+    public static final String ETCD_URL = System.getProperty("etcd.url","http://192.168.1.200:2379");
 
     public static final String ROOT_PATH = "agent/mesh";
 

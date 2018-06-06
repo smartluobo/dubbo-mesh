@@ -32,6 +32,7 @@ public class EtcdRegistry implements IRegistry{
 
     public EtcdRegistry(String registryAddress,ServiceRepositry serviceRepositry){
         this.serviceRepositry = serviceRepositry;
+        LOGGER.info("registryAddress: "+registryAddress);
         Client client = Client.builder().endpoints(registryAddress).build();
         this.lease   = client.getLeaseClient();
         this.kv      = client.getKVClient();
@@ -72,6 +73,7 @@ public class EtcdRegistry implements IRegistry{
     @Override
     public void find(final String serviceName) throws Exception {
         String strKey = MessageFormat.format("/{0}/{1}",Constant.ROOT_PATH,serviceName);
+        LOGGER.info("get service list strKey:"+strKey);
         final ByteSequence key  = ByteSequence.fromString(strKey);
         findKey(key);
         watchEtcdKey(key);
@@ -84,6 +86,7 @@ public class EtcdRegistry implements IRegistry{
             String s = kv.getKey().toStringUtf8();
             int index = s.lastIndexOf("/");
             String NodeInfoStr = s.substring(index + 1,s.length());
+            LOGGER.info("********************service list :"+NodeInfoStr+"************************");
             String[] nodeInfosStr = NodeInfoStr.split(":");
             String host = nodeInfosStr[0];
             String port = nodeInfosStr[1];
