@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class AgentConnecManager {
-    private EventLoopGroup eventLoopGroup = new NioEventLoopGroup(4);
+    private EventLoopGroup eventLoopGroup = new NioEventLoopGroup(100);
 
     private volatile Bootstrap bootstrap;
 

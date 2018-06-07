@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class NettyConnecManager {
-    private EventLoopGroup eventLoopGroup = new NioEventLoopGroup(4);
+    private EventLoopGroup eventLoopGroup = new NioEventLoopGroup(100);
     private static final Logger LOGGER = LoggerFactory.getLogger(NettyConnecManager.class);
 
     private Bootstrap bootstrap;

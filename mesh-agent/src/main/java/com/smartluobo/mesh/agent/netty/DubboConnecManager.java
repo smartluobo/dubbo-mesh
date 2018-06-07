@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DubboConnecManager {
-    private EventLoopGroup eventLoopGroup = new NioEventLoopGroup(4);
+    private EventLoopGroup eventLoopGroup = new NioEventLoopGroup(100);
 
     private Bootstrap bootstrap;
 

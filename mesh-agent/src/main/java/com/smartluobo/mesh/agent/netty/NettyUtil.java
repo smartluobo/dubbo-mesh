@@ -31,8 +31,8 @@ public class NettyUtil {
         final NettyRpcClient finalNettyRpcClient = nettyRpcClient;
         LOGGER.info("provider agent start netty service port: "+port);
         // Configure the server.
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        EventLoopGroup bossGroup = new NioEventLoopGroup(8);
+        EventLoopGroup workerGroup = new NioEventLoopGroup(100);
         try {
             ServerBootstrap b = new ServerBootstrap();
             b.group(bossGroup, workerGroup)
