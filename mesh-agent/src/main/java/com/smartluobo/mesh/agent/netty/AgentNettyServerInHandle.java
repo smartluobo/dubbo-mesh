@@ -42,17 +42,17 @@ public class AgentNettyServerInHandle extends SimpleChannelInboundHandler<byte[]
 		}
 	}
 
-	@Override
-	public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-		if (evt instanceof IdleStateEvent) {
-			// 不管是读事件空闲还是写事件空闲都向服务器发送心跳包
-			sendHeartbeatPacket(ctx);
-		}
-	}
-
-	public void sendHeartbeatPacket(ChannelHandlerContext ctx){
-		LOGGER.info("dubbo RpcClient send heart ..................");
-		DubboProtocolRequest heartInstance = DubboProtocolRequest.getHeartInstance();
-		ctx.writeAndFlush(heartInstance.getHeader().array());
-	}
+//	@Override
+//	public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+//		if (evt instanceof IdleStateEvent) {
+//			// 不管是读事件空闲还是写事件空闲都向服务器发送心跳包
+//			sendHeartbeatPacket(ctx);
+//		}
+//	}
+//
+//	public void sendHeartbeatPacket(ChannelHandlerContext ctx){
+//		LOGGER.info("dubbo RpcClient send heart ..................");
+//		DubboProtocolRequest heartInstance = DubboProtocolRequest.getHeartInstance();
+//		ctx.writeAndFlush(heartInstance.getHeader().array());
+//	}
 }
