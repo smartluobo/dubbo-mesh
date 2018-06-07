@@ -9,43 +9,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 public class AgentServerDecoder extends ByteToMessageDecoder {
     private static final int HEADER_LENGTH = 16;
     private static final Logger LOGGER = LoggerFactory.getLogger(AgentServerDecoder.class);
 
-//    @Override
-    protected void decodeback(ChannelHandlerContext ctx, ByteBuf buffer, List<Object> out) throws Exception {
-        int saveReaderIndex = buffer.readerIndex();
-        try {
-            Object msg = decode(ctx, buffer);
-            if(msg == DecodeResult.NEED_MORE_INPUT){
-                buffer.readerIndex(saveReaderIndex);
-            }else{
-                if(saveReaderIndex==buffer.readerIndex()){
-                    throw new IOException("Decode without read data.");
-                }
-                if(msg != null){
-                    out.add(msg);
-                }
-            }
-        }catch (Exception e){
-            LOGGER.info("provider agent netty server decoder exception");
-            throw e;
-        }
-    }
-
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf buffer, List<Object> out) throws Exception {
         try {
-            LOGGER.info("");
             do {
                 int saveReaderIndex = buffer.readerIndex();
                 Object msg = null;
-                LOGGER.info("");
+                LOGGER.info("*******hhhhahhaha*********************");
                 try {
-                    msg = decode(ctx, buffer);
+                    msg = decode2(buffer);
                 } catch (Exception e) {
                     throw e;
                 }
@@ -62,34 +41,27 @@ public class AgentServerDecoder extends ByteToMessageDecoder {
         }
     }
 
-    public Object decode(ChannelHandlerContext ctx, ByteBuf buffer) throws Exception {
-        int readable = buffer.readableBytes();
-        byte[] header = new byte[Math.min(readable, HEADER_LENGTH)];
-        buffer.readBytes(header);
-        return decode(ctx, buffer, readable, header);
-    }
+    private Object decode2(ByteBuf byteBuf){
 
-    protected Object decode(ChannelHandlerContext ctx, ByteBuf buffer, int readable, byte[] header) throws Exception {
+        int savedReaderIndex = byteBuf.readerIndex();
+        int readable = byteBuf.readableBytes();
 
-        // check length.
         if (readable < HEADER_LENGTH) {
             return DecodeResult.NEED_MORE_INPUT;
         }
-        // get data length.
-        int len = Bytes.bytes2int(header, 12);
+        LOGGER.info("*******************decode2 agent client send msg*************");
+        byte[] header = new byte[HEADER_LENGTH];
+        byteBuf.readBytes(header);
+        byte[] dataLen = Arrays.copyOfRange(header,12,16);
+        int len = Bytes.bytes2int(dataLen);
         int tt = len + HEADER_LENGTH;
         if (readable < tt) {
             return DecodeResult.NEED_MORE_INPUT;
         }
+
+        byteBuf.readerIndex(savedReaderIndex);
         byte[] data = new byte[tt];
-        int readerIndex = buffer.readerIndex();
-        if(readerIndex < HEADER_LENGTH){
-            throw new Exception("header length exception");
-        }
-        buffer.readerIndex(readerIndex-HEADER_LENGTH);
-        int readerIndex1 = buffer.readerIndex();
-        buffer.readBytes(data);
-        buffer.readerIndex(tt);
+        byteBuf.readBytes(data);
         return data;
     }
 }

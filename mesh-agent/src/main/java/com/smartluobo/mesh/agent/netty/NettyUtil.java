@@ -46,7 +46,7 @@ public class NettyUtil {
                             p.addLast(new LoggingHandler(LogLevel.INFO));
                             p.addLast(new AgentServerDecoder());
                             p.addLast(new AgentServerEncoder());
-                            p.addLast(new IdleStateHandler(6, 0, 0));
+//                            p.addLast(new IdleStateHandler(6, 0, 0));
                             p.addLast(new AgentNettyServerInHandle(finalNettyRpcClient));
                         }
                     });

@@ -14,7 +14,7 @@ public class AgentRpcClientInitializer extends ChannelInitializer<SocketChannel>
         ChannelPipeline pipeline = socketChannel.pipeline();
         pipeline.addLast(new AgentRpcEncoder());
         pipeline.addLast(new AgentRpcDecoder());
-        pipeline.addLast(new IdleStateHandler(0, 5, 0));
+//        pipeline.addLast(new IdleStateHandler(0, 5, 0));
         pipeline.addLast(new AgentRpcClientHandler());
 //        pipeline.addLast(new AgentClientHeartbeatHandler());
     }
