@@ -26,14 +26,14 @@ public class AgentNettyServerInHandle extends SimpleChannelInboundHandler<byte[]
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, byte[] msg) throws Exception {
 		try{
-			LOGGER.info("provider agent accept consumer agent send message"+msg.toString());
-			if(msg.length >=2){
-				byte b = msg[2];
-				if (FLAG == b){
-					LOGGER.info("...............................receive client send heart info..............");
-					return;
-				}
-			}
+//			LOGGER.info("provider agent accept consumer agent send message"+msg.toString());
+//			if(msg.length >=2){
+//				byte b = msg[2];
+//				if (FLAG == b){
+//					LOGGER.info("...............................receive client send heart info..............");
+//					return;
+//				}
+//			}
 			Object reslut = nettyRpcClient.invoke(msg);
 			LOGGER.info("dubbo provider return result : "+reslut);
 			ctx.writeAndFlush(reslut);

@@ -29,17 +29,17 @@ public class AgentRpcClientHandler extends SimpleChannelInboundHandler<RpcRespon
         }
     }
 
-    @Override
-    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        if (evt instanceof IdleStateEvent) {
-            // 不管是读事件空闲还是写事件空闲都向服务器发送心跳包
-            sendHeartbeatPacket(ctx);
-        }
-    }
-
-    public void sendHeartbeatPacket(ChannelHandlerContext ctx){
-        LOGGER.info("agentRpcClient send heart ..................");
-        DubboProtocolRequest heartInstance = DubboProtocolRequest.getHeartInstance();
-        ctx.writeAndFlush(heartInstance);
-    }
+//    @Override
+//    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+//        if (evt instanceof IdleStateEvent) {
+//            // 不管是读事件空闲还是写事件空闲都向服务器发送心跳包
+//            sendHeartbeatPacket(ctx);
+//        }
+//    }
+//
+//    public void sendHeartbeatPacket(ChannelHandlerContext ctx){
+//        LOGGER.info("agentRpcClient send heart ..................");
+//        DubboProtocolRequest heartInstance = DubboProtocolRequest.getHeartInstance();
+//        ctx.writeAndFlush(heartInstance);
+//    }
 }
