@@ -35,8 +35,11 @@ public class AgentNettyServerInHandle extends SimpleChannelInboundHandler<byte[]
 //				}
 //			}
 			LOGGER.info("AgentNettyServerInHandle receive agent client send msg :msg length: "+msg.length );
+			long startTime = System.currentTimeMillis();
 			Object reslut = nettyRpcClient.invoke(msg);
 			LOGGER.info("dubbo provider return result : "+reslut);
+			long endTime = System.currentTimeMillis();
+			LOGGER.info("AgentNettyServerInHandle provider-agent to dubbo-provider wait :"+(endTime-startTime)+"ms");
 			ctx.writeAndFlush(reslut);
 		}finally {
 			ReferenceCountUtil.release(msg);

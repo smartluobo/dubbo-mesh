@@ -44,7 +44,7 @@ public class AgentRpcClient {
         return "123";
     }
     public Object invoke(String hostAndPort, DubboProtocolRequest requestMsg) throws Exception {
-
+        long startTime = System.currentTimeMillis();
         Channel channel = agentConnecManager.getChannel(hostAndPort);
         LOGGER.info("agent netty channel :"+channel.toString());
         LOGGER.info("requestId=" + requestMsg.getRequestId());
@@ -58,6 +58,8 @@ public class AgentRpcClient {
         }catch (Exception e){
             e.printStackTrace();
         }
+        long endTime = System.currentTimeMillis();
+        LOGGER.info("AgentRpcClient current requestId:  "+requestMsg.getRequestId()+"wait time : "+(endTime-startTime)+"ms");
         return result;
     }
 }
