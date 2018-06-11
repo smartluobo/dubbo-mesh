@@ -27,7 +27,7 @@ public class HelloServiceImpl implements HelloService {
     @Resource
     private AgentRpcClient agentRpcClient;
 
-    String type = System.getProperty("agent.type");
+    String type = System.getProperty("type");
 
     @Resource
     private DubboRpcClient dubboRpcClient;
