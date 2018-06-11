@@ -1,19 +1,14 @@
 package com.smartluobo.mesh.agent.netty;
 
-import com.smartluobo.mesh.agent.protocol.AgentProtocolRequest;
-import com.smartluobo.mesh.agent.protocol.DubboProtocolRequest;
-import com.smartluobo.mesh.agent.rpc.DubboRpcClient;
 import com.smartluobo.mesh.agent.rpc.NettyRpcClient;
-import io.netty.buffer.ByteBuf;
+import com.smartluobo.mesh.agent.threadpool.NettyServerBusinessThreadPoolUtil;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.ReferenceCountUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AgentNettyServerInHandle extends SimpleChannelInboundHandler<byte[]> {
+public class AgentNettyServerInHandle extends SimpleChannelInboundHandler<byte[]>{
 	private NettyRpcClient nettyRpcClient;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AgentNettyServerInHandle.class);
@@ -26,21 +21,14 @@ public class AgentNettyServerInHandle extends SimpleChannelInboundHandler<byte[]
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, byte[] msg) throws Exception {
 		try{
-//			LOGGER.info("provider agent accept consumer agent send message"+msg.toString());
-//			if(msg.length >=2){
-//				byte b = msg[2];
-//				if (FLAG == b){
-//					LOGGER.info("...............................receive client send heart info..............");
-//					return;
-//				}
-//			}
 			LOGGER.info("AgentNettyServerInHandle receive agent client send msg :msg length: "+msg.length );
 			long startTime = System.currentTimeMillis();
-			Object reslut = nettyRpcClient.invoke(msg);
-			LOGGER.info("dubbo provider return result : "+reslut);
-			long endTime = System.currentTimeMillis();
-			LOGGER.info("AgentNettyServerInHandle provider-agent to dubbo-provider wait :"+(endTime-startTime)+"ms");
-			ctx.writeAndFlush(reslut);
+			NettyServerBusinessThreadPoolUtil.doBusiness(ctx, msg,nettyRpcClient);
+//			Object reslut = nettyRpcClient.invoke(msg);
+//			LOGGER.info("dubbo provider return result : "+reslut);
+//			long endTime = System.currentTimeMillis();
+//			LOGGER.info("AgentNettyServerInHandle provider-agent to dubbo-provider wait :"+(endTime-startTime)+"ms");
+//			ctx.writeAndFlush(reslut);
 		}finally {
 			ReferenceCountUtil.release(msg);
 		}
