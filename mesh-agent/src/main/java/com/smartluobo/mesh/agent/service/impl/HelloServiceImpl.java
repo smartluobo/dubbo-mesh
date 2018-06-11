@@ -62,8 +62,10 @@ public class HelloServiceImpl implements HelloService {
             try {
                 LOGGER.info("request send provider agent address: "+sb.toString());
 //                return agentRpcClient.invoke(sb.toString(),agentProtocolRequest);
+                long startTime = System.currentTimeMillis();
                 Object result = agentRpcClient.invoke(sb.toString(), dubboRequest);
-                LOGGER.info("return result : "+result);
+                long endTime = System.currentTimeMillis();
+                LOGGER.info("**************current request requestId : "+dubboRequest.getRequestId()+"wait time : "+(endTime-startTime)+"****************");
                 return result;
             }catch (Exception e){
                 LOGGER.error("request send provider agent address: "+sb.toString()+"exception :",e);

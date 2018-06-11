@@ -21,5 +21,6 @@ public class Constant {
 
     public static final byte HEARTFLAG = (byte) 0xCC;//心跳包检测
 
+    public static final int HEADER_LENGTH = 16;
 
 }

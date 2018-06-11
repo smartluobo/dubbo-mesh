@@ -22,7 +22,7 @@ public class AgentServerDecoder extends ByteToMessageDecoder {
             do {
                 int saveReaderIndex = buffer.readerIndex();
                 Object msg = null;
-                LOGGER.info("*******hhhhahhaha*********************");
+                LOGGER.info("*******AgentServerDecoder decode msg*********************");
                 try {
                     msg = decode2(buffer);
                 } catch (Exception e) {
