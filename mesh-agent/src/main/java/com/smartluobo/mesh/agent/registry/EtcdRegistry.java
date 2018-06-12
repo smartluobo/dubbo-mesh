@@ -11,6 +11,7 @@ import com.coreos.jetcd.options.GetOption;
 import com.coreos.jetcd.options.PutOption;
 import com.coreos.jetcd.watch.WatchEvent;
 import com.smartluobo.mesh.agent.constant.Constant;
+import com.smartluobo.mesh.agent.netty.AgentConnecManager;
 import com.smartluobo.mesh.agent.node.NodeInfo;
 import com.smartluobo.mesh.agent.repositry.ServiceRepositry;
 import org.slf4j.Logger;
@@ -29,9 +30,11 @@ public class EtcdRegistry implements IRegistry{
     private long leaseId;
     private Watch watch;
     private ServiceRepositry serviceRepositry;
+    private AgentConnecManager agentConnecManager;
 
-    public EtcdRegistry(String registryAddress,ServiceRepositry serviceRepositry){
+    public EtcdRegistry(String registryAddress,ServiceRepositry serviceRepositry,AgentConnecManager agentConnecManager){
         this.serviceRepositry = serviceRepositry;
+        this.agentConnecManager = agentConnecManager;
         LOGGER.info("registryAddress: "+registryAddress);
         Client client = Client.builder().endpoints(registryAddress).build();
         this.lease   = client.getLeaseClient();
@@ -94,7 +97,13 @@ public class EtcdRegistry implements IRegistry{
             for (int i = 0; i < weight; i++) {
                 nodeInfos.add(new NodeInfo(host,port,weight));
             }
+            StringBuffer sb = new StringBuffer();
+            sb.append(host).append(":").append(port).append(":").append(weight);
+            LOGGER.info("***********address : "+sb.toString());
+            agentConnecManager.getChannel(sb.toString());
+            LOGGER.info(sb.toString()+"channels size : "+agentConnecManager.getChannelRepositry().get(sb.toString()).size());
         }
+
         for (NodeInfo nodeInfo : nodeInfos) {
             LOGGER.info("----------------------------------"+nodeInfo.toString()+"-------------------------------------");
         }

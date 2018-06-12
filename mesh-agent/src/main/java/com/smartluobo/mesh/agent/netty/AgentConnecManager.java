@@ -26,6 +26,10 @@ public class AgentConnecManager {
     private static AtomicInteger mediumIndex = new AtomicInteger(0);
     private static AtomicInteger largeIndex = new AtomicInteger(0);
 
+    public Map<String, List<Channel>> getChannelRepositry() {
+        return channelRepositry;
+    }
+
     private Map<String,List<Channel>> channelRepositry = new ConcurrentHashMap<>();
     private List<Channel> smallChannels = new ArrayList<>(50);
     private List<Channel> mediumChannels = new ArrayList<>(100);

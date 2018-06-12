@@ -1,6 +1,7 @@
 package com.smartluobo.mesh.agent.boorstrap;
 
 import com.smartluobo.mesh.agent.constant.Constant;
+import com.smartluobo.mesh.agent.netty.AgentConnecManager;
 import com.smartluobo.mesh.agent.netty.NettyUtil;
 import com.smartluobo.mesh.agent.node.NodeInfo;
 import com.smartluobo.mesh.agent.registry.EtcdRegistry;
@@ -27,11 +28,14 @@ public class AgentBootStrap implements InitializingBean,ApplicationListener<Cont
     private ServiceRepositry serviceRepositry;
 
     @Resource
+    private AgentConnecManager agentConnecManager;
+
+    @Resource
     private NettyUtil nettyUtil;
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        EtcdRegistry etcdRegistry = new EtcdRegistry(Constant.ETCD_URL,serviceRepositry);
+        EtcdRegistry etcdRegistry = new EtcdRegistry(Constant.ETCD_URL,serviceRepositry,agentConnecManager);
         LOGGER.info("***************current service type:"+type+"***********");
         if("consumer".equals(type)){
             //如果是consumer类型的agent从etcd注册中心获取服务列表信息
