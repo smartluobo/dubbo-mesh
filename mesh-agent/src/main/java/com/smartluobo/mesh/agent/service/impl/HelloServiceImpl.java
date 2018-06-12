@@ -44,7 +44,7 @@ public class HelloServiceImpl implements HelloService {
         }else {
             NodeInfo nodeInfo = loadBalance.doSelect();
             StringBuffer sb = new StringBuffer();
-            sb.append(nodeInfo.getHost()).append(":").append(nodeInfo.getPort());
+            sb.append(nodeInfo.getHost()).append(":").append(nodeInfo.getPort()).append(":").append(nodeInfo.getWeight());
 //            AgentProtocolRequest agentProtocolRequest = new AgentProtocolRequest();
 //            agentProtocolRequest.path(interfaceName)
 //                    .method(method)

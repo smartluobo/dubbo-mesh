@@ -92,7 +92,7 @@ public class EtcdRegistry implements IRegistry{
             String port = nodeInfosStr[1];
             Integer weight = Integer.valueOf(nodeInfosStr[2]);
             for (int i = 0; i < weight; i++) {
-                nodeInfos.add(new NodeInfo(host,port));
+                nodeInfos.add(new NodeInfo(host,port,weight));
             }
         }
         for (NodeInfo nodeInfo : nodeInfos) {
