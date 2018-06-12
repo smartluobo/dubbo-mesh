@@ -27,8 +27,11 @@ public class NettyServerBusinessThreadPoolUtil {
             long requestId = Bytes.bytes2long(requestIdBytes,0);
             LOGGER.info("netty server send msg to provider requestId"+requestId);
             try {
+                long startTime = System.currentTimeMillis();
                 Object result = nettyRpcClient.invoke(msg);
                 ctx.writeAndFlush(result);
+                long endTime = System.currentTimeMillis();
+                LOGGER.info("current requestId : "+requestId+" wait time : "+(endTime-startTime)+"ms");
             } catch (Exception e) {
                 e.printStackTrace();
                 LOGGER.error("current requestId"+requestId+"happen exception");

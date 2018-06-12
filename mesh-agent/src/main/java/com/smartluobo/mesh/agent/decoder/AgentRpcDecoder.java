@@ -18,28 +18,27 @@ public class AgentRpcDecoder extends ByteToMessageDecoder {
     private static final int HEADER_LENGTH = 16;//header 固定长度
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf byteBuf, List<Object> out) throws Exception {
-        NettyClientBusinessThreadPoolUtil.decode(ctx,byteBuf,out);
-//        try {
-//            do {
-//                int savedReaderIndex = byteBuf.readerIndex();
-//                LOGGER.info("byteBuf readable position "+savedReaderIndex);
-//                Object msg = null;
-//                try {
-//                    msg = decode2(byteBuf);
-//                } catch (Exception e) {
-//                    throw e;
-//                }
-//                if (msg == DecodeResult.NEED_MORE_INPUT) {
-//                    byteBuf.readerIndex(savedReaderIndex);
-//                    break;
-//                }
-//                out.add(msg);
-//            } while (byteBuf.isReadable());
-//        } finally {
-//            if (byteBuf.isReadable()) {
-//                byteBuf.discardReadBytes();
-//            }
-//        }
+        try {
+            do {
+                int savedReaderIndex = byteBuf.readerIndex();
+                LOGGER.info("AgentRpcDecoder byteBuf readable position "+savedReaderIndex);
+                Object msg = null;
+                try {
+                    msg = decode2(byteBuf);
+                } catch (Exception e) {
+                    throw e;
+                }
+                if (msg == DecodeResult.NEED_MORE_INPUT) {
+                    byteBuf.readerIndex(savedReaderIndex);
+                    break;
+                }
+                out.add(msg);
+            } while (byteBuf.isReadable());
+        } finally {
+            if (byteBuf.isReadable()) {
+                byteBuf.discardReadBytes();
+            }
+        }
 
     }
 
@@ -68,7 +67,7 @@ public class AgentRpcDecoder extends ByteToMessageDecoder {
 
         // HEADER_LENGTH + 1，忽略header & Response value type的读取，直接读取实际Return value
         // dubbo返回的body中，前后各有一个换行，去掉
-        byte[] subArray = Arrays.copyOfRange(data,HEADER_LENGTH + 3, data.length -2 );
+        byte[] subArray = Arrays.copyOfRange(data,HEADER_LENGTH + 2, data.length -1 );
 
         String s = new String(subArray);
         LOGGER.info("provider return result :"+ s );
